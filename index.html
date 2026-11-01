@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#164e40">
+<title>Cărți audio</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+<header class="top">
+  <button id="btnBack" class="ico" aria-label="Înapoi" hidden>‹</button>
+  <h1 id="title">Cărți audio</h1>
+  <button id="btnSettings" class="ico" aria-label="Setări">⚙</button>
+</header>
+
+<div id="banner" class="banner" hidden>
+  <span id="bannerTxt">Sesiunea Google a expirat.</span>
+  <button id="bannerBtn">Reconectează</button>
+</div>
+
+<main>
+  <!-- Prima configurare -->
+  <section id="vSetup" class="view" hidden>
+    <h2>Configurare (o singură dată)</h2>
+    <p>Lipește aici <b>Client ID</b>-ul OAuth creat în Google Cloud Console (pașii sunt în README).</p>
+    <input id="inClientId" type="text" placeholder="123456789-xxxx.apps.googleusercontent.com" autocomplete="off" spellcheck="false">
+    <button id="btnSaveClient" class="primary">Salvează</button>
+    <p class="muted">Origine autorizată în Google Cloud: <code id="originTxt"></code></p>
+  </section>
+
+  <!-- Login -->
+  <section id="vLogin" class="view" hidden>
+    <div class="hero">
+      <img src="icon-192.png" alt="" width="96" height="96">
+      <h2>Cărțile tale din Google Drive</h2>
+      <p>Te conectezi o dată, alegi folderul cărții și asculți. Aplicația ține minte unde ai rămas.</p>
+      <button id="btnLogin" class="primary big">Conectează-te cu Google</button>
+      <p id="loginErr" class="err"></p>
+    </div>
+  </section>
+
+  <!-- Bibliotecă -->
+  <section id="vLib" class="view" hidden>
+    <div id="resume"></div>
+    <nav id="crumbs" class="crumbs"></nav>
+    <div id="list" class="list"></div>
+  </section>
+
+  <!-- Player -->
+  <section id="vPlayer" class="view" hidden>
+    <div class="np">
+      <img src="icon-512.png" alt="" class="cover">
+      <div id="pBook" class="pbook"></div>
+      <div id="pChap" class="pchap"></div>
+      <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Poziție">
+      <div class="times"><span id="tCur">0:00</span><span id="tLeft">-0:00</span></div>
+      <div class="ctrls">
+        <button id="bPrev" class="ico lg" aria-label="Capitolul anterior">⏮</button>
+        <button id="bBack" class="ico lg" aria-label="Înapoi 15 secunde">↺<small>15</small></button>
+        <button id="bPlay" class="play" aria-label="Redă">▶</button>
+        <button id="bFwd" class="ico lg" aria-label="Înainte 30 secunde">↻<small>30</small></button>
+        <button id="bNext" class="ico lg" aria-label="Capitolul următor">⏭</button>
+      </div>
+      <div class="row">
+        <label>Viteză</label>
+        <div id="speeds" class="chips"></div>
+      </div>
+      <div class="row">
+        <label>Somn</label>
+        <div id="sleeps" class="chips"></div>
+      </div>
+      <div id="pState" class="muted center"></div>
+    </div>
+    <h3 class="sub">Capitole</h3>
+    <div id="pList" class="list"></div>
+  </section>
+
+  <!-- Setări -->
+  <section id="vSettings" class="view" hidden>
+    <h2>Setări</h2>
+    <label class="sw"><input id="optAutoDl" type="checkbox"> Descarcă automat capitolul curent și pe următorul (merge și fără semnal, nu se oprește la expirarea sesiunii)</label>
+    <div class="card">
+      <div>Spațiu ocupat de descărcări: <b id="usage">…</b></div>
+      <button id="btnClearDl">Șterge toate descărcările</button>
+    </div>
+    <div class="card">
+      <div>Client ID: <code id="cidTxt"></code></div>
+      <button id="btnChangeClient">Schimbă Client ID</button>
+      <button id="btnLogout">Deconectare</button>
+    </div>
+    <p class="muted">Instalare pe telefon: în Chrome, meniul ⋮ → „Adaugă pe ecranul de pornire” / „Instalează aplicația”.</p>
+  </section>
+</main>
+
+<footer id="mini" class="mini" hidden>
+  <div class="mtxt"><div id="mChap"></div><div id="mBook" class="muted"></div></div>
+  <button id="mPlay" class="ico lg" aria-label="Redă">▶</button>
+  <div id="mBar" class="mbar"></div>
+</footer>
+
+<div id="toast" class="toast" hidden></div>
+<audio id="au" preload="auto"></audio>
+<script src="app.js"></script>
+</body>
+</html>
